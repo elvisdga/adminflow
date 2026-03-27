@@ -1,101 +1,168 @@
 {% extends "base.html" %}
 
-{% block title %}Clientes{% endblock %}
+{% block title %}Clientes | AdminFlow{% endblock %}
 
 {% block content %}
 
-<div class="d-flex justify-content-between mb-3">
-    <h2>Clientes registrados ({{ total }})</h2>
-    <a href="{% url 'client_create' %}" class="btn btn-primary">
-        + Nuevo Cliente
-    </a>
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4 toolbar-actions">
+    <div>
+        <h1 class="h2 fw-bold mb-1">Gestión de clientes</h1>
+        <p class="text-muted mb-0">
+            Administra, busca, ordena y actualiza tus registros de clientes.
+        </p>
+    </div>
+
+    <div>
+        <a href="{% url 'client_create' %}" class="btn btn-primary btn-lg">
+            + Nuevo Cliente
+        </a>
+    </div>
 </div>
 
-<form method="get" class="row g-2 mb-3">
-    <div class="col-md-4">
-        <input
-            type="text"
-            name="q"
-            class="form-control"
-            placeholder="Buscar por nombre o email"
-            value="{{ query }}"
-        >
+<div class="card module-card">
+    <div class="card-body p-4">
+
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4 toolbar-actions">
+            <div>
+                <h2 class="h3 mb-1">Clientes registrados</h2>
+                <p class="text-muted mb-0">Total actual: <strong>{{ total }}</strong></p>
+            </div>
+        </div>
+
+        <form method="get" class="row g-3 align-items-end mb-4">
+            <div class="col-lg-5">
+                <label for="q" class="form-label fw-semibold">Buscar cliente</label>
+                <input
+                    type="text"
+                    id="q"
+                    name="q"
+                    class="form-control"
+                    placeholder="Buscar por nombre o email"
+                    value="{{ query }}"
+                >
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-dark">Buscar</button>
+            </div>
+
+            <div class="col-auto">
+                <a href="{% url 'client_list' %}" class="btn btn-outline-secondary">Limpiar</a>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-4">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 70px;">#</th>
+                        <th style="width: 100px;">
+                            <a href="?q={{ query }}&sort={% if sort == 'id' %}-id{% else %}id{% endif %}"
+                               class="sort-link text-white fw-semibold">
+                                ID
+                                {% if sort == 'id' %}
+                                    ↑
+                                {% elif sort == '-id' %}
+                                    ↓
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="?q={{ query }}&sort={% if sort == 'name' %}-name{% else %}name{% endif %}"
+                               class="sort-link text-white fw-semibold">
+                                Nombre
+                                {% if sort == 'name' %}
+                                    ↑
+                                {% elif sort == '-name' %}
+                                    ↓
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="?q={{ query }}&sort={% if sort == 'email' %}-email{% else %}email{% endif %}"
+                               class="sort-link text-white fw-semibold">
+                                Email
+                                {% if sort == 'email' %}
+                                    ↑
+                                {% elif sort == '-email' %}
+                                    ↓
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th style="width: 180px;" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for client in page_obj %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><span class="fw-semibold">{{ client.id }}</span></td>
+                        <td>{{ client.name }}</td>
+                        <td>{{ client.email }}</td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                <a href="{% url 'client_update' client.pk %}" class="btn btn-sm btn-outline-warning">
+                                    Editar
+                                </a>
+                                <a href="{% url 'client_delete' client.pk %}" class="btn btn-sm btn-outline-danger">
+                                    Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <h3 class="h5 mb-2">No hay clientes registrados</h3>
+                                <p class="mb-3">Todavía no existen registros para mostrar en este módulo.</p>
+                                <a href="{% url 'client_create' %}" class="btn btn-primary">
+                                    Crear primer cliente
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div class="text-muted small">
+                Página <strong>{{ page_obj.number }}</strong> de <strong>{{ page_obj.paginator.num_pages }}</strong>
+            </div>
+
+            <nav aria-label="Paginación de clientes">
+                <ul class="pagination mb-0">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&sort={{ sort }}&page=1">Primera</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&sort={{ sort }}&page={{ page_obj.previous_page_number }}">Anterior</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">
+                            {{ page_obj.number }}
+                        </span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&sort={{ sort }}&page={{ page_obj.next_page_number }}">Siguiente</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&sort={{ sort }}&page={{ page_obj.paginator.num_pages }}">Última</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
     </div>
-    <div class="col-auto">
-        <button type="submit" class="btn btn-dark">Buscar</button>
-        <a href="{% url 'client_list' %}" class="btn btn-secondary">Limpiar</a>
-    </div>
-</form>
-
-<table class="table table-striped table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>#</th>
-            <th>
-                <a href="?q={{ query }}&sort={% if sort == 'id' %}-id{% else %}id{% endif %}" class="text-white">
-                    ID
-                </a>
-            </th>
-            <th>
-                <a href="?q={{ query }}&sort={% if sort == 'name' %}-name{% else %}name{% endif %}" class="text-white">
-                    Nombre
-                </a>
-            </th>
-            <th>
-                <a href="?q={{ query }}&sort={% if sort == 'email' %}-email{% else %}email{% endif %}" class="text-white">
-                    Email
-                </a>
-            </th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        {% for client in page_obj %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ client.id }}</td>
-            <td>{{ client.name }}</td>
-            <td>{{ client.email }}</td>
-            <td>
-                <a href="{% url 'client_update' client.pk %}" class="btn btn-sm btn-warning">Editar</a>
-                <a href="{% url 'client_delete' client.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5" class="text-center">No hay clientes registrados.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<nav aria-label="Paginación de clientes">
-    <ul class="pagination">
-        {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?q={{ query }}&sort={{ sort }}&page=1">Primera</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?q={{ query }}&sort={{ sort }}&page={{ page_obj.previous_page_number }}">Anterior</a>
-            </li>
-        {% endif %}
-
-        <li class="page-item active">
-            <span class="page-link">
-                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-            </span>
-        </li>
-
-        {% if page_obj.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?q={{ query }}&sort={{ sort }}&page={{ page_obj.next_page_number }}">Siguiente</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?q={{ query }}&sort={{ sort }}&page={{ page_obj.paginator.num_pages }}">Última</a>
-            </li>
-        {% endif %}
-    </ul>
-</nav>
+</div>
 
 {% endblock %}
