@@ -1,3 +1,4 @@
+import csv
 from .models import Client
 from .forms import ClientForm
 from django.db.models import Q
@@ -5,7 +6,8 @@ from django.contrib import messages
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.http import HttpResponse
+from django.views import View
 
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
@@ -64,9 +66,9 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         messages.success(self.request, "Cliente actualizado correctamente.")
         return super().form_valid(form)
-    
-
+  
 class ClientDeleteView(LoginRequiredMixin, DeleteView):
+
     model = Client
     template_name = "core/client_confirm_delete.html"
     success_url = reverse_lazy("client_list")
@@ -74,3 +76,19 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, "Cliente eliminado correctamente.")
         return super().form_valid(form)
+    
+class ClientExportCSVView(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="clients.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(["ID", "Nombre", "Email"])
+
+        clients = Client.objects.all()
+
+        for client in clients:
+            writer.writerow([client.id, client.name, client.email])
+
+        return response
