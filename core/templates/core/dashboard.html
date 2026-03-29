@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | AdminFlow{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-12">
+        <div class="mb-4">
+            <h1 class="fw-bold mb-2">Dashboard</h1>
+            <p class="text-muted mb-0">Resumen general del sistema administrativo.</p>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card module-card h-100">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Total de clientes</h5>
+                <h2 class="fw-bold mb-0">{{ total_clients }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card module-card h-100">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Acceso rápido</h5>
+                <a href="{% url 'client_list' %}" class="btn btn-primary mt-2">Ir a clientes</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

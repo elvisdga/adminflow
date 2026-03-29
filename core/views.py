@@ -3,11 +3,12 @@ from .models import Client
 from .forms import ClientForm
 from django.db.models import Q
 from django.contrib import messages
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views import View
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-from django.views import View
+
 
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
@@ -92,3 +93,11 @@ class ClientExportCSVView(LoginRequiredMixin, View):
             writer.writerow([client.id, client.name, client.email])
 
         return response
+    
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = "core/dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_clients"] = Client.objects.count()
+        return context
