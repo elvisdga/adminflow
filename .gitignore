@@ -205,3 +205,13 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# OS / system
+.DS_Store
+Thumbs.db
+
+# VSCode (recomendado ignorar settings locales)
+.vscode/
+
+# Python env lock (opcional)
+.python-version
