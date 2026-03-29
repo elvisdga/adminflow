@@ -110,6 +110,25 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{% url 'client_list' %}">AdminFlow</a>
+    
+            <div class="d-flex align-items-center gap-3 text-white">
+                {% if request.user.is_authenticated %}
+                    <span class="small text-light">
+                        Sesión: <strong>{{ request.user.username }}</strong>
+                    </span>
+    
+                    <form method="post" action="{% url 'logout' %}" class="m-0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-light">
+                            Cerrar sesión
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light">
+                        Iniciar sesión
+                    </a>
+                {% endif %}
+            </div>
         </div>
     </nav>
 

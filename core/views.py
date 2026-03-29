@@ -4,9 +4,10 @@ from django.db.models import Q
 from django.contrib import messages
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     template_name = "core/client_list.html"
     context_object_name = "clients"
@@ -44,7 +45,7 @@ class ClientListView(ListView):
 
         return context
 
-class ClientCreateView(CreateView):
+class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
     template_name = "core/client_form.html"
@@ -54,7 +55,7 @@ class ClientCreateView(CreateView):
         messages.success(self.request, "Cliente creado correctamente.")
         return super().form_valid(form)
 
-class ClientUpdateView(UpdateView):
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
     model = Client
     form_class = ClientForm
     template_name = "core/client_form.html"
@@ -65,7 +66,7 @@ class ClientUpdateView(UpdateView):
         return super().form_valid(form)
     
 
-class ClientDeleteView(DeleteView):
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
     model = Client
     template_name = "core/client_confirm_delete.html"
     success_url = reverse_lazy("client_list")
