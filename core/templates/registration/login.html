@@ -1,62 +1,113 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdminFlow | Acceso al sistema</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1600');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 20, 60, 0.65);
+            z-index: 0;
+        }
+        .login-box {
+            position: relative;
+            z-index: 1;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            color: white;
+        }
+        .login-box h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.25rem;
+        }
+        .login-box p {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2rem;
+        }
+        .form-label { color: rgba(255,255,255,0.85); font-weight: 500; }
+        .form-control {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            border-radius: 8px;
+            padding: 0.65rem 1rem;
+        }
+        .form-control:focus {
+            background: rgba(255,255,255,0.15);
+            border-color: #00d4aa;
+            color: white;
+            box-shadow: 0 0 0 3px rgba(0,212,170,0.25);
+        }
+        .form-control::placeholder { color: rgba(255,255,255,0.4); }
+        .btn-login {
+            background: linear-gradient(135deg, #00d4aa, #0099cc);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            transition: opacity 0.2s;
+        }
+        .btn-login:hover { opacity: 0.9; color: white; }
+        .footer-text {
+            text-align: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="login-box">
+        <h1>AdminFlow</h1>
+        <p>Acceso al sistema</p>
 
-{% block title %}Iniciar sesión | AdminFlow{% endblock %}
-
-{% block content %}
-
-<div class="row justify-content-center">
-    <div class="col-lg-6 col-xl-5">
-
-        <div class="text-center mb-4">
-            <h1 class="h2 fw-bold mb-1">Iniciar sesión</h1>
-            <p class="text-muted mb-0">
-                Accede al panel administrativo de AdminFlow.
-            </p>
+        {% if form.errors %}
+        <div class="alert alert-danger py-2">
+            Usuario o contraseña incorrectos.
         </div>
+        {% endif %}
 
-        <div class="card module-card">
-            <div class="card-body p-4 p-lg-5">
-
-                {% if form.errors %}
-                    <div class="alert alert-danger">
-                        Usuario o contraseña incorrectos. Intenta nuevamente.
-                    </div>
-                {% endif %}
-
-                {% if next %}
-                    <div class="alert alert-warning">
-                        Debes iniciar sesión para continuar.
-                    </div>
-                {% endif %}
-
-                <form method="post" novalidate>
-                    {% csrf_token %}
-
-                    <div class="mb-4">
-                        <label for="{{ form.username.id_for_label }}" class="form-label fw-semibold">
-                            Usuario
-                        </label>
-                        {{ form.username }}
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="{{ form.password.id_for_label }}" class="form-label fw-semibold">
-                            Contraseña
-                        </label>
-                        {{ form.password }}
-                    </div>
-
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-dark btn-lg">
-                            Entrar
-                        </button>
-                    </div>
-                </form>
-
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Usuario</label>
+                <input type="text" name="username" class="form-control" placeholder="Ingresa tu usuario" autofocus>
             </div>
-        </div>
-
+            <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <input type="password" name="password" class="form-control" placeholder="Ingresa tu contraseña">
+            </div>
+            <button type="submit" class="btn-login">Ingresar</button>
+        </form>
+        <p class="footer-text">Panel administrativo interno</p>
     </div>
-</div>
-
-{% endblock %}
+</body>
+</html>
