@@ -32,6 +32,11 @@ El proyecto ya cuenta con un módulo CRUD de clientes completamente funcional y 
 
 ### Confirmación de eliminación
 ![Eliminar](docs/screenshots/client_delete.png)
+=======
+![Formulario de cliente](docs/screenshots/client_form.png)
+
+### Confirmación de eliminación
+![Confirmación de eliminación](docs/screenshots/client_delete.png)
 
 
 ## Stack tecnológico
