@@ -21,6 +21,19 @@ El proyecto ya cuenta con un módulo CRUD de clientes completamente funcional y 
 - Mensajes flash de éxito
 - Interfaz administrativa consistente
 
+
+## Screenshots
+
+### Listado de clientes
+![Listado de clientes](docs/screenshots/client_list.png)
+
+### Formulario de cliente
+![Formulario](docs/screenshots/client_form.png)
+
+### Confirmación de eliminación
+![Eliminar](docs/screenshots/client_delete.png)
+
+
 ## Stack tecnológico
 
 - Python 3.12
