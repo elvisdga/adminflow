@@ -1,0 +1,53 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Detalle del cliente</h2>
+    <p class="text-sm text-gray-500">Información completa del registro seleccionado.</p>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-6 space-y-4">
+
+    <div class="flex items-center justify-between border-b pb-3">
+      <span class="text-sm text-gray-500 font-medium">ID</span>
+      <span class="text-gray-800 font-semibold">#{{ client.id }}</span>
+    </div>
+
+    <div class="flex items-center justify-between border-b pb-3">
+      <span class="text-sm text-gray-500 font-medium">Nombre</span>
+      <span class="text-gray-800 font-semibold">{{ client.name }}</span>
+    </div>
+
+    <div class="flex items-center justify-between border-b pb-3">
+      <span class="text-sm text-gray-500 font-medium">Email</span>
+      <a href="mailto:{{ client.email }}" class="text-blue-600 hover:underline">{{ client.email }}</a>
+    </div>
+
+    <div class="flex items-center justify-between border-b pb-3">
+      <span class="text-sm text-gray-500 font-medium">Teléfono</span>
+      <span class="text-gray-800">{{ client.phone|default:"No registrado" }}</span>
+    </div>
+
+    <div class="flex items-center justify-between">
+      <span class="text-sm text-gray-500 font-medium">Registrado el</span>
+      <span class="text-gray-800">{{ client.created_at|date:"d/m/Y H:i" }}</span>
+    </div>
+
+  </div>
+
+  <div class="mt-6 flex gap-3">
+    <a href="{% url 'client_list' %}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-sm">
+      ← Volver a clientes
+    </a>
+    <a href="{% url 'client_update' client.pk %}" class="px-4 py-2 bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 text-sm">
+      Editar
+    </a>
+    <a href="{% url 'client_delete' client.pk %}" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm">
+      Eliminar
+    </a>
+  </div>
+
+</div>
+{% endblock %}

@@ -13,12 +13,16 @@
     </div>
 
     <div>
-        <a href="{% url 'client_export_csv' %}" class="btn btn-success">
-            Exportar CSV
-        </a>
-        <a href="{% url 'client_create' %}" class="btn btn-primary btn-lg">
-            + Nuevo Cliente
-        </a>
+         {% if perms.core.view_client %}
+           <a href="{% url 'client_export_csv' %}" class="btn btn-success">
+               Exportar CSV
+           </a>
+         {% endif %}
+         {% if perms.core.add_client %}
+            <a href="{% url 'client_create' %}" class="btn btn-primary btn-lg">
+               + Nuevo Cliente
+            </a>
+         {% endif %}
     </div>
 </div>
 
@@ -104,15 +108,21 @@
                         <td>{{ client.name }}</td>
                         <td>{{ client.email }}</td>
                         <td class="text-center">
-                            <div class="d-flex justify-content-center gap-2 flex-wrap">
-                                <a href="{% url 'client_update' client.pk %}" class="btn btn-sm btn-outline-warning">
-                                    Editar
-                                </a>
-                                <a href="{% url 'client_delete' client.pk %}" class="btn btn-sm btn-outline-danger">
-                                    Eliminar
-                                </a>
-                            </div>
-                        </td>
+			    <div class="d-flex justify-content-center gap-2 flex-wrap">
+    				{% if perms.core.change_client %}
+    				   <a href="{% url 'client_update' client.pk %}" class="btn btn-sm btn-outline-warning">
+        			      Editar
+    				   </a>
+    				{% endif %}
+    				
+				{% if perms.core.delete_client %}
+    				   <a href="{% url 'client_delete' client.pk %}" class="btn btn-sm btn-outline-danger">
+        			      Eliminar
+    				   </a>
+    				{% endif %}
+			    </div>
+                        
+			</td>
                     </tr>
                     {% empty %}
                     <tr>
