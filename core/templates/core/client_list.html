@@ -105,7 +105,7 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td><span class="fw-semibold">{{ client.id }}</span></td>
-                        <td>{{ client.name }}</td>
+                        <td><a href="{% url 'client_detail' client.pk %}">{{ client.name }}</a></td>
                         <td>{{ client.email }}</td>
                         <td class="text-center">
 			    <div class="d-flex justify-content-center gap-2 flex-wrap">

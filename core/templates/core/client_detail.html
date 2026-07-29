@@ -1,53 +1,47 @@
-{% extends "core/base.html" %}
+{% extends "base.html" %}
+
+{% block title %}Detalle de cliente | AdminFlow{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto">
+<div class="mb-4">
+    <h2 class="h3 fw-bold">Detalle del cliente</h2>
+    <p class="text-muted">Información completa del registro seleccionado.</p>
+</div>
 
-  <div class="mb-6">
-    <h2 class="text-2xl font-bold text-gray-800">Detalle del cliente</h2>
-    <p class="text-sm text-gray-500">Información completa del registro seleccionado.</p>
-  </div>
+<div class="card module-card">
+    <div class="card-body p-4">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">ID</dt>
+            <dd class="col-sm-9">#{{ client.id }}</dd>
 
-  <div class="bg-white rounded-xl shadow p-6 space-y-4">
+            <dt class="col-sm-3">Nombre</dt>
+            <dd class="col-sm-9">{{ client.name }}</dd>
 
-    <div class="flex items-center justify-between border-b pb-3">
-      <span class="text-sm text-gray-500 font-medium">ID</span>
-      <span class="text-gray-800 font-semibold">#{{ client.id }}</span>
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9"><a href="mailto:{{ client.email }}">{{ client.email }}</a></dd>
+
+            <dt class="col-sm-3">Teléfono</dt>
+            <dd class="col-sm-9">{{ client.phone|default:"No registrado" }}</dd>
+
+            <dt class="col-sm-3">Registrado el</dt>
+            <dd class="col-sm-9">{{ client.created_at|date:"d/m/Y H:i" }}</dd>
+        </dl>
+
+        <div class="d-flex gap-2 mt-4">
+            <a href="{% url 'client_list' %}" class="btn btn-outline-secondary">
+                ← Volver a clientes
+            </a>
+            {% if perms.core.change_client %}
+            <a href="{% url 'client_update' client.pk %}" class="btn btn-outline-warning">
+                Editar
+            </a>
+            {% endif %}
+            {% if perms.core.delete_client %}
+            <a href="{% url 'client_delete' client.pk %}" class="btn btn-outline-danger">
+                Eliminar
+            </a>
+            {% endif %}
+        </div>
     </div>
-
-    <div class="flex items-center justify-between border-b pb-3">
-      <span class="text-sm text-gray-500 font-medium">Nombre</span>
-      <span class="text-gray-800 font-semibold">{{ client.name }}</span>
-    </div>
-
-    <div class="flex items-center justify-between border-b pb-3">
-      <span class="text-sm text-gray-500 font-medium">Email</span>
-      <a href="mailto:{{ client.email }}" class="text-blue-600 hover:underline">{{ client.email }}</a>
-    </div>
-
-    <div class="flex items-center justify-between border-b pb-3">
-      <span class="text-sm text-gray-500 font-medium">Teléfono</span>
-      <span class="text-gray-800">{{ client.phone|default:"No registrado" }}</span>
-    </div>
-
-    <div class="flex items-center justify-between">
-      <span class="text-sm text-gray-500 font-medium">Registrado el</span>
-      <span class="text-gray-800">{{ client.created_at|date:"d/m/Y H:i" }}</span>
-    </div>
-
-  </div>
-
-  <div class="mt-6 flex gap-3">
-    <a href="{% url 'client_list' %}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-sm">
-      ← Volver a clientes
-    </a>
-    <a href="{% url 'client_update' client.pk %}" class="px-4 py-2 bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 text-sm">
-      Editar
-    </a>
-    <a href="{% url 'client_delete' client.pk %}" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm">
-      Eliminar
-    </a>
-  </div>
-
 </div>
 {% endblock %}
