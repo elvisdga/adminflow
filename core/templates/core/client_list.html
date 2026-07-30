@@ -130,9 +130,11 @@
                             <div class="empty-state">
                                 <h3 class="h5 mb-2">No hay clientes registrados</h3>
                                 <p class="mb-3">Todavía no existen registros para mostrar en este módulo.</p>
+                                {% if perms.core.add_client %}
                                 <a href="{% url 'client_create' %}" class="btn btn-primary">
                                     Crear primer cliente
                                 </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>
