@@ -2,6 +2,23 @@
 
 AdminFlow es un sistema web administrativo desarrollado con Django, orientado a la gestión interna de registros y operaciones básicas de negocio. Actualmente incluye un módulo funcional de gestión de clientes con interfaz administrativa refinada y validada en entorno local.
 
+## 🚀 Demo en vivo
+
+**[https://adminflow-d7ro.onrender.com](https://adminflow-d7ro.onrender.com)**
+
+> ⚠️ Desplegado en el plan gratuito de Render. El servicio "duerme" tras 15 minutos de inactividad — la primera carga puede tardar entre 30 y 50 segundos.
+
+### Credenciales de acceso
+
+| Rol | Usuario | Permisos |
+|---|---|---|
+| Administrador | `admin` | Acceso completo: CRUD de clientes, exportación CSV, panel de administración |
+| Operador | `demo` | Solo lectura — puede ver el listado y el detalle de clientes, sin permisos de creación, edición ni eliminación |
+
+*Contraseñas disponibles a pedido.*
+
+El sistema implementa control de acceso basado en roles (RBAC) usando el sistema de permisos nativo de Django, con vistas y elementos de interfaz que se adaptan según el rol autenticado.
+
 ## Objetivo del proyecto
 
 Este proyecto nace como base para un panel administrativo interno, con enfoque en orden, escalabilidad y experiencia de usuario. La idea es construir módulos reutilizables que permitan administrar información de forma clara, rápida y profesional.
@@ -14,10 +31,13 @@ El proyecto ya cuenta con un módulo CRUD de clientes completamente funcional y 
 - Listado de clientes
 - Creación de clientes
 - Edición de clientes
+- Vista de detalle de cliente
 - Eliminación con confirmación previa
 - Búsqueda por nombre o email
 - Ordenamiento por ID, nombre y email
 - Paginación
+- Exportación de clientes a CSV
+- Autenticación y control de acceso por roles (RBAC)
 - Mensajes flash de éxito
 - Interfaz administrativa consistente
 
@@ -100,11 +120,9 @@ Validar con python manage.py check después de cambios importantes
 Probar en navegador antes de hacer commit
 Guardar cambios con commits claros y trazables
 Próximas mejoras sugeridas
-Vista de detalle de cliente
-Exportación de clientes a CSV
 Mejoras de validación visual
-Dashboard con métricas
-Autenticación de usuarios
+Dashboard con métricas reales
+Tests automatizados
 Módulos adicionales (proveedores, facturas, tareas, etc.)
 Propósito de portafolio
 
